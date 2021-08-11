@@ -1,7 +1,7 @@
 package cn.unscientificjszhai.unscientificcourseparser.parser;
 
-import cn.unscientificjszhai.unscientificcourseparser.bean.core.DisplayName;
 import cn.unscientificjszhai.unscientificcourseparser.bean.core.Parser;
+import cn.unscientificjszhai.unscientificcourseparser.bean.core.ParserBean;
 import cn.unscientificjszhai.unscientificcourseparser.bean.core.StringUtility;
 import cn.unscientificjszhai.unscientificcourseparser.bean.data.ClassTime;
 import cn.unscientificjszhai.unscientificcourseparser.bean.data.Course;
@@ -10,7 +10,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +20,7 @@ import java.util.List;
  *
  * @author UnscientificJsZhai
  */
-@Component("whut")
-@DisplayName("武汉理工大学")
+@ParserBean(value = "whut", displayName = "武汉理工大学")
 public final class WhutParser extends Parser {
 
     @NotNull

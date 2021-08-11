@@ -2,11 +2,13 @@ package cn.unscientificjszhai.unscientificcourseparser.bean.core
 
 import cn.unscientificjszhai.unscientificcourseparser.bean.data.Course
 import cn.unscientificjszhai.unscientificcourseparser.parser.NwpuParser
+import cn.unscientificjszhai.unscientificcourseparser.parser.WhutParser
 
 /**
- * 解析器基类。示例请见西北工业大学解析。
+ * 解析器基类。Kotlin示例见西北工业大学解析。Java示例见武汉理工大学解析。
  *
  * @see NwpuParser
+ * @see WhutParser
  * @author UnscientificJsZhai
  */
 abstract class Parser {
@@ -19,7 +21,7 @@ abstract class Parser {
     /**
      * 解析前可能会在调用方的界面上显示一条消息。
      */
-    open val message:String = ""
+    open val message: String = ""
 
     /**
      * 解析方法。子类需要重写此方法。
@@ -35,5 +37,5 @@ abstract class Parser {
      * @return 解析器的显示名称。
      * @throws NullPointerException 如果解析器没有设置显示名称则会抛出此异常。
      */
-    fun getDisplayName() = this::class.java.getAnnotation(DisplayName::class.java).value
+    fun getDisplayName() = this::class.java.getAnnotation(ParserBean::class.java).displayName
 }

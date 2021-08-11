@@ -2,7 +2,7 @@
 
 ## 简介
 
-本项目是基于Jsoup的课程表解析库，可用于课程表开发。用到了Spring框架。  
+本项目是基于Jsoup的课程表解析库，可用于课程表开发。采用IoC模式，使得更容易使用。 
 仍在开发中，正式版即将上线。  
 相关项目：[时间管理大师](https://github.com/UnscientificJsZhai/TimeManager)
 
@@ -17,9 +17,9 @@
 ### 开发指南
 
 1. Fork项目，打开项目，在.parser包中建立自己的解析器子类，继承.bean.core.Parser抽象类。
-2. 给你的解析器子类添加下面这两个注解。  
-   分别是`org.springframework.stereotype.Component`和`cn.unscientificjszhai.unscientificcourseparser.bean.core.DisplayName`。
-   第一个注解的参数相当于是你的解析器的标识符，要求使用小写字母，最好是学校英文简称。第二个注解的参数相当于显示名称，即适配器在使用中显示出的名称。 使用中文全称即可。
+2. 给你的解析器子类添加这个注解。  
+   `cn.unscientificjszhai.unscientificcourseparser.bean.core.ParserBean`
+   注解的第一个参数相当于是你的解析器的标识符，要求使用小写字母，最好是学校英文简称。第二个参数相当于显示名称，即适配器在使用中显示出的名称。 使用中文全称即可。
 3. 查看Course类和ClassTime类的文档，了解输出数据类的结构。
 4. 重写`url`属性，这个属性是教务系统的网址。  
    对于Java用户，则是重写`getUrl():String`方法。

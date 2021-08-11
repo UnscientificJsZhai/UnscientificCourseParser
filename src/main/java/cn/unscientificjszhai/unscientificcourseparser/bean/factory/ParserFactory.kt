@@ -1,31 +1,53 @@
 package cn.unscientificjszhai.unscientificcourseparser.bean.factory
 
-import cn.unscientificjszhai.unscientificcourseparser.bean.core.DisplayName
 import cn.unscientificjszhai.unscientificcourseparser.bean.core.Parser
-import org.springframework.beans.factory.NoSuchBeanDefinitionException
-import org.springframework.context.ApplicationContext
-import org.springframework.context.support.ClassPathXmlApplicationContext
-import org.springframework.stereotype.Component
+import cn.unscientificjszhai.unscientificcourseparser.bean.core.ParserBean
+import org.reflections.Reflections
 
 /**
  * 工厂类。用于提供解析器。
  *
- * @param context Spring的上下文。已经有默认配置，一般不需要手动添加和修改。
  * @author UnscientificJsZhai
  */
-class ParserFactory(
-    private val context: ApplicationContext = ClassPathXmlApplicationContext("parsers.xml")
-) {
+class ParserFactory {
+
+    private val parserMap: HashMap<String, Class<out Parser>> = HashMap()
+
+    init {
+        val reflections = Reflections("cn.unscientificjszhai.unscientificcourseparser.parser")
+        val parserClassSet = reflections.getSubTypesOf(Parser::class.java)
+        for (parserClass in parserClassSet) {
+            try {
+                val beanName = parserClass.getAnnotation(ParserBean::class.java).value
+                this.parserMap[beanName] = parserClass
+            } catch (e: NullPointerException) {
+                continue
+            }
+        }
+    }
 
     /**
      * 获取要查找的解析器。
      *
-     * @param beanName 解析器上注解[Component]的参数。
+     * @param beanName 解析器上注解[ParserBean]的参数[ParserBean.value]。
      * @return 要查找的解析器。
-     * @throws NoSuchBeanDefinitionException 对应的解析器找不到时，抛出此异常。
+     * @throws ClassNotFoundException 对应的解析器找不到时，抛出此异常。
      */
-    @Throws(NoSuchBeanDefinitionException::class)
-    fun get(beanName: String) = this.context.getBean(beanName) as Parser
+    @Throws(ClassNotFoundException::class)
+    operator fun get(beanName: String): Parser {
+        val parserClass = this.parserMap[beanName]
+        if (parserClass == null) {
+            throw ClassNotFoundException("Can not find parser class: \"$beanName\"")
+        } else {
+            val constructors = parserClass.constructors
+            for (constructor in constructors) {
+                if (constructor.parameters.isEmpty()) {
+                    return constructor.newInstance() as Parser
+                }
+            }
+            throw ClassNotFoundException("Can not initialize parser class: \"$beanName\"")
+        }
+    }
 
     /**
      * 获取一个包含所有解析器的字典。
@@ -35,10 +57,8 @@ class ParserFactory(
      */
     fun parserList(): Map<String, String> {
         val map = HashMap<String, String>()
-        for (beanName in this.context.getBeanNamesForType(Parser::class.java)) {
-            val parserClass = this.context.getType(beanName)
-            val displayName = parserClass.getAnnotation(DisplayName::class.java).value
-
+        for (beanName in this.parserMap.keys) {
+            val displayName = this.parserMap[beanName]!!.getAnnotation(ParserBean::class.java).displayName
             map[displayName] = beanName
         }
         return map

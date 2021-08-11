@@ -1,21 +1,19 @@
 package cn.unscientificjszhai.unscientificcourseparser.parser
 
-import cn.unscientificjszhai.unscientificcourseparser.bean.core.DisplayName
 import cn.unscientificjszhai.unscientificcourseparser.bean.core.Parser
+import cn.unscientificjszhai.unscientificcourseparser.bean.core.ParserBean
 import cn.unscientificjszhai.unscientificcourseparser.bean.core.StringUtility.removeHtmlTags
 import cn.unscientificjszhai.unscientificcourseparser.bean.data.ClassTime
 import cn.unscientificjszhai.unscientificcourseparser.bean.data.Course
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import org.springframework.stereotype.Component
 
 /**
  * 西北工业大学。
  *
  * @author UnscientificJsZhai
  */
-@Component("nwpu")
-@DisplayName("西北工业大学")
+@ParserBean("nwpu", "西北工业大学")
 class NwpuParser : Parser() {
 
     override val url = "https://ecampus.nwpu.edu.cn/"
