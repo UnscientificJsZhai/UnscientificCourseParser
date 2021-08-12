@@ -52,3 +52,29 @@
    ```
 5. 每个解析器类的JavaDoc（KDoc）第一行要用中文写出对应学校的全名。
 6. 每个解析器的作者都请用`@author`署名。你们的努力该被所有人看到。
+
+## 接入说明
+
+在Gradle脚本中添加如下依赖。当前版本：  
+[![](https://jitpack.io/v/UnscientificJsZhai/UnscientificCourseParser.svg)](https://jitpack.io/#UnscientificJsZhai/UnscientificCourseParser)
+
+```groovy
+allprojects {
+    repositories {
+
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencies {
+    implementation 'com.github.UnscientificJsZhai:UnscientificCourseParser:Tag'
+}
+```
+
+需要把“Tag”改为当前版本号。
+
+### 使用说明
+
+通过ParserFactory类查找获取解析器。这个类需要一个TypeScanner对象作为参数。TypeScanner是查找解析器的接口，默认（即无入参）采用Reflections反射扫描对象，还提供一个硬编码的对象列表。Android用户无法使用反射扫描的实现，可以选择硬编码实现，也可以自己实现TypeScanner。
+
+通过ParserFactory查找到想要的解析器后，调用解析器的`parse(String):List<Course>`方法，传入一个HTML字符串，即可获得解析结果。
