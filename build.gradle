@@ -6,7 +6,7 @@ plugins {
 apply plugin: 'maven'
 
 group 'com.github.unscientificjszhai'
-version '0.0.1-alpha02'
+version '0.0.1-alpha04'
 
 repositories {
     mavenCentral()

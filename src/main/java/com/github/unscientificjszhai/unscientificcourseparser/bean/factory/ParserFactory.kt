@@ -8,25 +8,39 @@ import org.reflections.scanners.SubTypesScanner
 /**
  * 工厂类。用于提供解析器。
  *
+ * @param scanner 类扫描器。
  * @author UnscientificJsZhai
  */
-class ParserFactory {
+class ParserFactory(scanner: TypeScanner) {
 
-    private val parserMap: HashMap<String, Class<out Parser>> = HashMap()
+    /**
+     * 默认类扫描器，不在Android上工作。
+     */
+    private class DefaultScanner : TypeScanner {
 
-    init {
-        val reflections =
-            Reflections("com.github.unscientificjszhai.unscientificcourseparser.parser", SubTypesScanner())
-        val parserClassSet = reflections.getSubTypesOf(Parser::class.java)
-        for (parserClass in parserClassSet) {
-            try {
-                val beanName = parserClass.getAnnotation(ParserBean::class.java).value
-                this.parserMap[beanName] = parserClass
-            } catch (e: NullPointerException) {
-                continue
+        override fun scan(): Map<String, Class<out Parser>> {
+            val map = HashMap<String, Class<out Parser>>()
+            val reflections =
+                Reflections("com.github.unscientificjszhai.unscientificcourseparser.parser", SubTypesScanner())
+            val parserClassSet = reflections.getSubTypesOf(Parser::class.java)
+            for (parserClass in parserClassSet) {
+                try {
+                    val beanName = parserClass.getAnnotation(ParserBean::class.java).value
+                    map[beanName] = parserClass
+                } catch (e: NullPointerException) {
+                    continue
+                }
             }
+            return map
         }
     }
+
+    private val parserMap: Map<String, Class<out Parser>> = scanner.scan()
+
+    /**
+     * 默认构造方法，使用自带扫描器。不支持在Android上使用。
+     */
+    constructor() : this(DefaultScanner())
 
     /**
      * 获取要查找的解析器。
