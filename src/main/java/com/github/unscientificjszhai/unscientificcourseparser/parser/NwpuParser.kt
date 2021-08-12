@@ -1,10 +1,10 @@
-package cn.unscientificjszhai.unscientificcourseparser.parser
+package com.github.unscientificjszhai.unscientificcourseparser.parser
 
-import cn.unscientificjszhai.unscientificcourseparser.bean.core.Parser
-import cn.unscientificjszhai.unscientificcourseparser.bean.core.ParserBean
-import cn.unscientificjszhai.unscientificcourseparser.bean.core.StringUtility.removeHtmlTags
-import cn.unscientificjszhai.unscientificcourseparser.bean.data.ClassTime
-import cn.unscientificjszhai.unscientificcourseparser.bean.data.Course
+import com.github.unscientificjszhai.unscientificcourseparser.bean.core.Parser
+import com.github.unscientificjszhai.unscientificcourseparser.bean.core.ParserBean
+import com.github.unscientificjszhai.unscientificcourseparser.bean.core.StringUtility.removeHtmlTags
+import com.github.unscientificjszhai.unscientificcourseparser.bean.data.ClassTime
+import com.github.unscientificjszhai.unscientificcourseparser.bean.data.Course
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 

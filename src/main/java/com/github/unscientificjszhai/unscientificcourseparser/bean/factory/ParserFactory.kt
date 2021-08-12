@@ -1,8 +1,9 @@
-package cn.unscientificjszhai.unscientificcourseparser.bean.factory
+package com.github.unscientificjszhai.unscientificcourseparser.bean.factory
 
-import cn.unscientificjszhai.unscientificcourseparser.bean.core.Parser
-import cn.unscientificjszhai.unscientificcourseparser.bean.core.ParserBean
+import com.github.unscientificjszhai.unscientificcourseparser.bean.core.Parser
+import com.github.unscientificjszhai.unscientificcourseparser.bean.core.ParserBean
 import org.reflections.Reflections
+import org.reflections.scanners.SubTypesScanner
 
 /**
  * 工厂类。用于提供解析器。
@@ -14,7 +15,8 @@ class ParserFactory {
     private val parserMap: HashMap<String, Class<out Parser>> = HashMap()
 
     init {
-        val reflections = Reflections("cn.unscientificjszhai.unscientificcourseparser.parser")
+        val reflections =
+            Reflections("com.github.unscientificjszhai.unscientificcourseparser.parser", SubTypesScanner())
         val parserClassSet = reflections.getSubTypesOf(Parser::class.java)
         for (parserClass in parserClassSet) {
             try {

@@ -1,6 +1,6 @@
-package cn.unscientificjszhai.unscientificcourseparser.bean.core
+package com.github.unscientificjszhai.unscientificcourseparser.bean.core
 
-import cn.unscientificjszhai.unscientificcourseparser.bean.data.Course
+import com.github.unscientificjszhai.unscientificcourseparser.bean.data.Course
 import com.google.gson.*
 import java.lang.reflect.Type
 

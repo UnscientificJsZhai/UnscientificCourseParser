@@ -1,4 +1,4 @@
-package cn.unscientificjszhai.unscientificcourseparser.bean.data
+package com.github.unscientificjszhai.unscientificcourseparser.bean.data
 
 /**
  * 上课时间数据类。

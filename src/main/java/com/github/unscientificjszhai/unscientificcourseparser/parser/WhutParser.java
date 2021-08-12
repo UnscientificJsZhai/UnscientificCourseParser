@@ -1,10 +1,13 @@
-package cn.unscientificjszhai.unscientificcourseparser.parser;
+package com.github.unscientificjszhai.unscientificcourseparser.parser;
 
-import cn.unscientificjszhai.unscientificcourseparser.bean.core.Parser;
-import cn.unscientificjszhai.unscientificcourseparser.bean.core.ParserBean;
-import cn.unscientificjszhai.unscientificcourseparser.bean.core.StringUtility;
-import cn.unscientificjszhai.unscientificcourseparser.bean.data.ClassTime;
-import cn.unscientificjszhai.unscientificcourseparser.bean.data.Course;
+import com.github.unscientificjszhai.unscientificcourseparser.bean.core.Parser;
+import com.github.unscientificjszhai.unscientificcourseparser.bean.core.ParserBean;
+import com.github.unscientificjszhai.unscientificcourseparser.bean.core.StringUtility;
+import com.github.unscientificjszhai.unscientificcourseparser.bean.data.ClassTime;
+import com.github.unscientificjszhai.unscientificcourseparser.bean.data.Course;
+import com.github.unscientificjszhai.unscientificcourseparser.bean.core.StringUtility;
+import com.github.unscientificjszhai.unscientificcourseparser.bean.data.ClassTime;
+import com.github.unscientificjszhai.unscientificcourseparser.bean.data.Course;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

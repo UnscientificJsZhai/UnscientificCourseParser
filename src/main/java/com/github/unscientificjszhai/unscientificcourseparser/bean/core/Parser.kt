@@ -1,8 +1,8 @@
-package cn.unscientificjszhai.unscientificcourseparser.bean.core
+package com.github.unscientificjszhai.unscientificcourseparser.bean.core
 
-import cn.unscientificjszhai.unscientificcourseparser.bean.data.Course
-import cn.unscientificjszhai.unscientificcourseparser.parser.NwpuParser
-import cn.unscientificjszhai.unscientificcourseparser.parser.WhutParser
+import com.github.unscientificjszhai.unscientificcourseparser.bean.data.Course
+import com.github.unscientificjszhai.unscientificcourseparser.parser.NwpuParser
+import com.github.unscientificjszhai.unscientificcourseparser.parser.WhutParser
 
 /**
  * 解析器基类。Kotlin示例见西北工业大学解析。Java示例见武汉理工大学解析。
