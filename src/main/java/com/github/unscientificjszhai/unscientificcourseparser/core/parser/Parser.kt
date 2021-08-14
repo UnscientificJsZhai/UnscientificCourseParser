@@ -1,6 +1,6 @@
-package com.github.unscientificjszhai.unscientificcourseparser.bean.core
+package com.github.unscientificjszhai.unscientificcourseparser.core.parser
 
-import com.github.unscientificjszhai.unscientificcourseparser.bean.data.Course
+import com.github.unscientificjszhai.unscientificcourseparser.core.data.Course
 import com.github.unscientificjszhai.unscientificcourseparser.parser.NwpuParser
 import com.github.unscientificjszhai.unscientificcourseparser.parser.WhutParser
 

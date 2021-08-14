@@ -1,4 +1,4 @@
-package com.github.unscientificjszhai.unscientificcourseparser.bean.core
+package com.github.unscientificjszhai.unscientificcourseparser
 
 /**
  * 处理HTML字符时常用的方法。本对象中的方法建议添加[JvmStatic]注解方便Java语言调用。

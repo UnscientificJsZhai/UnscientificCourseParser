@@ -1,4 +1,4 @@
-package com.github.unscientificjszhai.unscientificcourseparser.bean.core
+package com.github.unscientificjszhai.unscientificcourseparser.core.parser
 
 /**
  * 解析器前置注解。

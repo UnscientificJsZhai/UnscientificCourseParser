@@ -1,4 +1,4 @@
-package com.github.unscientificjszhai.unscientificcourseparser.bean.data
+package com.github.unscientificjszhai.unscientificcourseparser.core.data
 
 /**
  * 课程数据。

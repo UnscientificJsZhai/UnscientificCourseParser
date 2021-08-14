@@ -1,10 +1,10 @@
 package com.github.unscientificjszhai.unscientificcourseparser.parser
 
-import com.github.unscientificjszhai.unscientificcourseparser.bean.core.Parser
-import com.github.unscientificjszhai.unscientificcourseparser.bean.core.ParserBean
-import com.github.unscientificjszhai.unscientificcourseparser.bean.core.StringUtility.removeHtmlTags
-import com.github.unscientificjszhai.unscientificcourseparser.bean.data.ClassTime
-import com.github.unscientificjszhai.unscientificcourseparser.bean.data.Course
+import com.github.unscientificjszhai.unscientificcourseparser.StringUtility.removeHtmlTags
+import com.github.unscientificjszhai.unscientificcourseparser.core.parser.Parser
+import com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean
+import com.github.unscientificjszhai.unscientificcourseparser.core.data.ClassTime
+import com.github.unscientificjszhai.unscientificcourseparser.core.data.Course
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
@@ -16,7 +16,7 @@ import org.jsoup.nodes.Element
 @ParserBean("nwpu", "西北工业大学")
 class NwpuParser : Parser() {
 
-    override val url = "https://ecampus.nwpu.edu.cn/"
+    override val url = "http://us.nwpu.edu.cn/eams"
 
     override fun parse(htmlText: String): List<Course> {
         val courseList = ArrayList<Course>()

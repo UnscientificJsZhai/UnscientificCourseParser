@@ -1,7 +1,7 @@
-package com.github.unscientificjszhai.unscientificcourseparser.bean.factory
+package com.github.unscientificjszhai.unscientificcourseparser.core.factory
 
-import com.github.unscientificjszhai.unscientificcourseparser.bean.core.Parser
-import com.github.unscientificjszhai.unscientificcourseparser.bean.core.ParserBean
+import com.github.unscientificjszhai.unscientificcourseparser.core.parser.Parser
+import com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
 
