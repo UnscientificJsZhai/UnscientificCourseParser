@@ -68,14 +68,18 @@ class ParserFactory(scanner: TypeScanner) {
     /**
      * 获取一个包含所有解析器的字典。
      *
+     * @param cloud 是否只显示仅限云解析的解析器。
      * @return 键是解析器的显示名称，可用于显示在GUI中。
      * 值是解析器的beanName，用于在[get]方法中获取这个解析器。
      */
-    fun parserList(): Map<String, String> {
+    fun parserList(cloud: Boolean = false): Map<String, String> {
         val map = HashMap<String, String>()
         for (beanName in this.parserMap.keys) {
-            val displayName = this.parserMap[beanName]!!.getAnnotation(ParserBean::class.java).displayName
-            map[displayName] = beanName
+            val annotation = this.parserMap[beanName]!!.getAnnotation(ParserBean::class.java)
+            val displayName = annotation.displayName
+            if (cloud == annotation.cloud) {
+                map[displayName] = beanName
+            }
         }
         return map
     }

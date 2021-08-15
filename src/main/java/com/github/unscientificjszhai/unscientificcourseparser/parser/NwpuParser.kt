@@ -1,10 +1,10 @@
 package com.github.unscientificjszhai.unscientificcourseparser.parser
 
-import com.github.unscientificjszhai.unscientificcourseparser.StringUtility.removeHtmlTags
-import com.github.unscientificjszhai.unscientificcourseparser.core.parser.Parser
-import com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean
+import com.github.unscientificjszhai.unscientificcourseparser.StringUtility.textToDayOfWeek
 import com.github.unscientificjszhai.unscientificcourseparser.core.data.ClassTime
 import com.github.unscientificjszhai.unscientificcourseparser.core.data.Course
+import com.github.unscientificjszhai.unscientificcourseparser.core.parser.Parser
+import com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
@@ -16,121 +16,89 @@ import org.jsoup.nodes.Element
 @ParserBean("nwpu", "西北工业大学")
 class NwpuParser : Parser() {
 
-    override val url = "http://us.nwpu.edu.cn/eams"
+    override val url = "https://students-schedule.nwpu.edu.cn/ui/#/courseTable"
 
     override fun parse(htmlText: String): List<Course> {
-        val courseList = ArrayList<Course>()
-        val jsoupDoc = Jsoup.parse(htmlText)
-        val tbody = jsoupDoc.getElementsByClass("gridtable").select("tbody")
-        val rawCourses = tbody[1].select("tr")
+        val titleMap = HashMap<String, Course>()
 
-        for (rawCourse in rawCourses) {
-            val elements = rawCourse.select("tr").select("td")
-
-            val course = Course(
-                title = elements[3].toString().removeHtmlTags(),
-                credit = elements[5].toString().removeHtmlTags().toDouble(),
-                remark = elements[11].toString().removeHtmlTags().trim(),
-                classTimes = parseClassTime(elements[7])
-            )
-
-            courseList.add(course)
-        }
-
-        return courseList
-    }
-
-    /**
-     * 解析每个上课时间段的方法。
-     *
-     * @param rawClassTimes 原始数据。
-     * @return 上课时间段的解析结果。
-     */
-    private fun parseClassTime(rawClassTimes: Element): ArrayList<ClassTime> {
-        val classTimes = ArrayList<ClassTime>()
-
-        val stringList = rawClassTimes.toString().split("<br>")
-        for (part in stringList) {
-            val rawClassTime = part.removeHtmlTags().split(" ")
-
-            val fromTo = rawClassTime[2].split("-")
-            val from = fromTo[0].toInt()
-            val to = fromTo[fromTo.lastIndex].toInt()
-
-            val (startWeek, endWeek, scheduleMode) = parseWeekData(rawClassTime[3])
-
-            classTimes.add(
-                ClassTime(
-                    day = rawClassTime[1].textToDayOfWeek(),
-                    from = from,
-                    to = to,
-                    location = rawClassTime[4],
-                    teacher = rawClassTime[0],
-                    startWeek = startWeek,
-                    endWeek = endWeek,
-                    scheduleMode = scheduleMode
-                )
-            )
-        }
-
-        return classTimes
-    }
-
-    /**
-     * 内部数据类，用于解析上课周数。
-     *
-     * @param startWeek 同[ClassTime.startWeek]。
-     * @param endWeek 同[ClassTime.endWeek]。
-     * @param scheduleMode 同[ClassTime.scheduleMode]。
-     */
-    private data class WeekData(
-        val startWeek: Int,
-        val endWeek: Int,
-        val scheduleMode: Int
-    )
-
-    /**
-     * 解析上课周数。
-     *
-     * @param value 包含上课周数的字符串，如果只上一周课则为一个数字。
-     *              否则为方括号包裹的两个数字。方括号外可能有表示单双周上课的字符。
-     * @return 解析后的数据类。
-     */
-    private fun parseWeekData(value: String): WeekData {
-        val regex = Regex("[0-9]+")
-        val numbers = regex.findAll(value).iterator()
-        val startWeek = numbers.next().value.toInt()
-        return if (numbers.hasNext()) {
-            val endWeek = numbers.next().value.toInt()
-            val scheduleMode = if (value.endsWith("单")) {
-                ClassTime.SCHEDULE_MODE_ODD
-            } else if (value.endsWith("双")) {
-                ClassTime.SCHEDULE_MODE_EVEN
+        val doc = Jsoup.parse(htmlText)
+        val courseElements = doc.getElementsByClass("course-content")
+        for (element in courseElements) {
+            val title = element.getElementsByClass("name")[0].childNode(0).toString()
+            if (title in titleMap.keys) {
+                //追加到重复的课程中
+                titleMap[title]!!.classTimes.add(parseClassTime(element))
             } else {
-                ClassTime.SCHEDULE_MODE_DEFAULT
+                //新建课程
+                val remark = element.getElementsByClass("number")[0].childNode(0).toString()
+                titleMap[title] = Course(
+                    title = title,
+                    credit = 0.0, //不解析学分
+                    remark = remark
+                ).apply {
+                    classTimes.add(parseClassTime(element))
+                }
             }
-            WeekData(startWeek, endWeek, scheduleMode)
-        } else {
-            WeekData(startWeek, startWeek, ClassTime.SCHEDULE_MODE_DEFAULT)
         }
+
+        return titleMap.values.toList()
     }
 
-
-    /**
-     * 将周几、星期几的描述转为[ClassTime]中描述星期的数字。
-     *
-     * @return 描述周几上课的数字。0代表周日，6代表周六。无法解析则返回-1。
-     */
-    private fun String.textToDayOfWeek(): Int {
-        return when (this) {
-            "星期一", "周一" -> 1
-            "星期二", "周二" -> 2
-            "星期三", "周三" -> 3
-            "星期四", "周四" -> 4
-            "星期五", "周五" -> 5
-            "星期六", "周六" -> 6
-            "星期日", "周日" -> 0
-            else -> -1
+    private fun parseClassTime(element: Element): ClassTime {
+        val location = try {
+            val addressElement = element.getElementsByClass("address")[0]
+            val contentElement = addressElement.getElementsByClass("content")[0]
+            contentElement.childNode(0).toString().split(" ")[1]
+        } catch (e: IndexOutOfBoundsException) {
+            ""
         }
+
+        val teacherName = try {
+            val teacherElement = element.getElementsByClass("teacher")[0]
+            val contentElement = teacherElement.getElementsByClass("content")[0]
+            contentElement.childNode(0).toString()
+        } catch (e: IndexOutOfBoundsException) {
+            ""
+        }
+
+        //必须包含时间元素
+        val timeString = element.getElementsByClass("time")[0]
+            .getElementsByClass("content")[0]
+            .childNode(0).toString().split(" ")
+        val numberRegex = "[0-9]+".toRegex()
+
+        var numbers = numberRegex.findAll(timeString[0]).iterator()
+        val startWeek = numbers.next().value.toInt()
+        val endWeek = if (numbers.hasNext()) {
+            numbers.next().value.toInt()
+        } else {
+            startWeek
+        }
+        val scheduleMode = if (timeString[0].endsWith("双周")) {
+            ClassTime.SCHEDULE_MODE_EVEN
+        } else if (timeString[0].endsWith("单周")) {
+            ClassTime.SCHEDULE_MODE_ODD
+        } else {
+            ClassTime.SCHEDULE_MODE_DEFAULT
+        }
+
+        numbers = numberRegex.findAll(timeString[2]).iterator()
+        val from = numbers.next().value.toInt()
+        val to = if (numbers.hasNext()) {
+            numbers.next().value.toInt()
+        } else {
+            from
+        }
+
+        return ClassTime(
+            day = timeString[1].textToDayOfWeek(),
+            from = from,
+            to = to,
+            location = location,
+            teacher = teacherName,
+            startWeek = startWeek,
+            endWeek = endWeek,
+            scheduleMode = scheduleMode
+        )
     }
 }
