@@ -1,5 +1,6 @@
 package com.github.unscientificjszhai.unscientificcourseparser.core.export
 
+import com.github.unscientificjszhai.unscientificcourseparser.core.data.ClassTime
 import com.github.unscientificjszhai.unscientificcourseparser.core.data.Course
 import com.google.gson.*
 import java.lang.reflect.Type
@@ -24,6 +25,22 @@ class CoursesJson(private val courses: List<Course>, private val serializer: Jso
          */
         @JvmStatic
         fun List<Course>.json() = CoursesJson(this)
+
+        /**
+         * 反序列化。
+         *
+         * @param jsonString 输入Json字符串。
+         * @return 反序列化的结果。
+         */
+        @JvmStatic
+        fun jsonToCourse(
+            jsonString: String,
+            deserializer: JsonDeserializer<CoursesJson> = CourseListDeserializer()
+        ): List<Course> {
+            val gson = GsonBuilder().registerTypeAdapter(CoursesJson::class.java, deserializer).create()
+
+            return gson.fromJson(jsonString, CoursesJson::class.java)
+        }
     }
 
     /**
@@ -71,6 +88,92 @@ class CoursesJson(private val courses: List<Course>, private val serializer: Jso
                 root.add(courseElement)
             }
             return root
+        }
+    }
+
+    /**
+     * 课程表数据Json反序列化实现。
+     *
+     * @author UnscientificJsZhai
+     */
+    private class CourseListDeserializer : JsonDeserializer<CoursesJson> {
+
+        override fun deserialize(
+            json: JsonElement,
+            typeOfT: Type?,
+            context: JsonDeserializationContext?
+        ): CoursesJson {
+            val list = ArrayList<Course>()
+
+            val courseArray = if (json.isJsonArray) {
+                json.asJsonArray
+            } else return CoursesJson(list)
+            for (courseElement in courseArray) {
+
+                if (courseElement is JsonObject) {
+                    val title = courseElement.get("title").asString
+                    val credit = courseElement.get("credit").asDouble
+                    val remark = courseElement.get("remark").asString
+                    val classTimeJsonArray = courseElement.get("class_times").asJsonArray
+                    val classTimes = ArrayList<ClassTime>()
+
+                    for (classTimeElement in classTimeJsonArray) {
+                        if (classTimeElement is JsonObject) {
+                            val dayOfWeek = classTimeElement.get("day_of_week").asInt
+                            val startWeek = classTimeElement.get("start_week").asInt
+                            val endWeek = classTimeElement.get("end_week").asInt
+                            val scheduleMode = classTimeElement.get("schedule_mode").asInt
+                            val location = classTimeElement.get("location").asString
+                            val teacherName = classTimeElement.get("teacher").asString
+
+                            if (classTimeElement.has("time")) {
+                                classTimes.add(
+                                    ClassTime(
+                                        day = dayOfWeek,
+                                        startWeek = startWeek,
+                                        endWeek = endWeek,
+                                        scheduleMode = scheduleMode,
+                                        location = location,
+                                        teacher = teacherName,
+                                        from = 0,
+                                        to = 0,
+                                        specificTime = classTimeElement.get("time").asString
+                                    )
+                                )
+                            } else {
+                                classTimes.add(
+                                    ClassTime(
+                                        day = dayOfWeek,
+                                        startWeek = startWeek,
+                                        endWeek = endWeek,
+                                        scheduleMode = scheduleMode,
+                                        location = location,
+                                        teacher = teacherName,
+                                        from = classTimeElement.get("from").asInt,
+                                        to = classTimeElement.get("to").asInt
+                                    )
+                                )
+                            }
+                        } else {
+                            continue
+                        }
+                    }
+
+                    list.add(
+                        Course(
+                            title = title,
+                            credit = credit,
+                            remark = remark,
+                            classTimes = classTimes
+                        )
+                    )
+                } else {
+                    continue
+                }
+
+            }
+
+            return CoursesJson(list)
         }
     }
 
