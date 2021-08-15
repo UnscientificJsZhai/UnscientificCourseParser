@@ -30,17 +30,26 @@ class CoursesJson(private val courses: List<Course>, private val serializer: Jso
          * 反序列化。
          *
          * @param jsonString 输入Json字符串。
+         * @param deserializer 反序列化接口。
          * @return 反序列化的结果。
          */
         @JvmStatic
         fun jsonToCourse(
             jsonString: String,
-            deserializer: JsonDeserializer<CoursesJson> = CourseListDeserializer()
+            deserializer: JsonDeserializer<CoursesJson>
         ): List<Course> {
             val gson = GsonBuilder().registerTypeAdapter(CoursesJson::class.java, deserializer).create()
 
             return gson.fromJson(jsonString, CoursesJson::class.java)
         }
+
+        /**
+         * 使用默认提供接口反序列化。
+         *
+         * @param jsonString 输入Json字符串。
+         */
+        @JvmStatic
+        fun jsonToCourse(jsonString: String) = jsonToCourse(jsonString, CourseListDeserializer())
     }
 
     /**
