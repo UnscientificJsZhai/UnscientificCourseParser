@@ -104,7 +104,7 @@ public final class WhutParser extends Parser {
         }
         //information: [03,17,1,2]
         Pattern classPattern = Pattern.compile("\\([0-9]+-[0-9]+节\\)");
-        Pattern weekPattern = Pattern.compile("第[0-9]+-[0-9]+周");
+        Pattern weekPattern = Pattern.compile("[0-9]+-[0-9]+周");
         //从第几节课上到第几节课
         Matcher classMatcher = classPattern.matcher(information);
         int from, to;
