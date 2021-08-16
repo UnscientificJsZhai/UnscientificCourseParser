@@ -1,10 +1,10 @@
 package com.github.unscientificjszhai.unscientificcourseparser.parser;
 
-import com.github.unscientificjszhai.unscientificcourseparser.core.parser.Parser;
-import com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean;
 import com.github.unscientificjszhai.unscientificcourseparser.StringUtility;
 import com.github.unscientificjszhai.unscientificcourseparser.core.data.ClassTime;
 import com.github.unscientificjszhai.unscientificcourseparser.core.data.Course;
+import com.github.unscientificjszhai.unscientificcourseparser.core.parser.Parser;
+import com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,6 +14,8 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 武汉理工大学。
@@ -67,10 +69,12 @@ public final class WhutParser extends Parser {
             for (Element rawClassTime : rawClassTimes) {
                 final Element time = rawClassTime.select("a").get(0);
                 final String title = time.childNode(0).toString().trim();
-                final ClassTime classTime = this.parseClassTime(time, teacherMap.get(title), index);
+                final List<ClassTime> classTimes = this.parseClassTime(time, teacherMap.get(title), index);
                 for (Course course : courseList) {
                     if (course.getTitle().equals(title)) {
-                        course.getClassTimes().add(classTime);
+                        for (ClassTime classTime : classTimes) {
+                            course.getClassTimes().add(classTime);
+                        }
                         break;
                     }
                 }
@@ -84,25 +88,64 @@ public final class WhutParser extends Parser {
      * 解析上课时间。
      *
      * @param element Jsoup元素。
-     * @return 上课时间。
+     * @return 上课时间, 数组元素。
      */
     @NotNull
-    private ClassTime parseClassTime(final Element element, String teacherName, int tableIndex) {
+    private List<ClassTime> parseClassTime(final Element element, String teacherName, int tableIndex) {
+        ArrayList<ClassTime> resultList = new ArrayList();
         if (teacherName == null) {
             teacherName = "";
         }
         final String location = StringUtility.removeHtmlTags(element.childNode(1).toString()).substring(1);
-        final String[] information = StringUtility.removeHtmlTags(element.childNode(3).toString())
-                .replaceAll("\\D+", " ").trim().split(" ");
+        final String information = element.child(1).childNode(0).toString();
         int dayOfWeek = tableIndex % 8 - 1;
         if (dayOfWeek == -1) {
             dayOfWeek = 0;
         }
         //information: [03,17,1,2]
-        final int startWeek = Integer.parseInt(information[0]);
-        final int endWeek = Integer.parseInt(information[1]);
-        final int from = Integer.parseInt(information[2]);
-        final int to = Integer.parseInt(information[3]);
-        return new ClassTime(dayOfWeek, from, to, startWeek, endWeek, ClassTime.SCHEDULE_MODE_DEFAULT, location, teacherName, null);
+        Pattern classPattern = Pattern.compile("\\([0-9]+-[0-9]+节\\)");
+        Pattern weekPattern = Pattern.compile("第[0-9]+-[0-9]+周");
+        //从第几节课上到第几节课
+        Matcher classMatcher = classPattern.matcher(information);
+        int from, to;
+        try {
+            if (classMatcher.find()) {
+                String[] numbers = classMatcher.group().replaceAll("\\D+", " ").trim().split(" ");
+                from = Integer.parseInt(numbers[0]);
+                to = Integer.parseInt(numbers[1]);
+            } else {
+                throw new Exception("匹配失败");
+            }
+        } catch (Exception e) {
+            from = 1;
+            to = 1;
+        }
+        //上课周数
+        Matcher weekMatcher = weekPattern.matcher(information);
+        while (weekMatcher.find()) {
+            int startWeek, endWeek;
+            try {
+                String[] numbers = weekMatcher.group().replaceAll("\\D+", " ").trim().split(" ");
+                startWeek = Integer.parseInt(numbers[0]);
+                endWeek = Integer.parseInt(numbers[1]);
+            } catch (Exception e) {
+                startWeek = 1;
+                endWeek = 1;
+            }
+            resultList.add(
+                    new ClassTime(
+                            dayOfWeek,
+                            from,
+                            to,
+                            startWeek,
+                            endWeek,
+                            ClassTime.SCHEDULE_MODE_DEFAULT,
+                            location,
+                            teacherName,
+                            null
+                    )
+            );
+        }
+        return resultList;
     }
 }
