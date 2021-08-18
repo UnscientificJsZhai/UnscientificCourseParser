@@ -7,8 +7,7 @@
 
 ### 支持学校
 
-西北工业大学
-武汉理工大学
+西北工业大学 武汉理工大学
 
 ## 适配说明
 
@@ -20,7 +19,7 @@
 
 ### 开发指南
 
-1. Fork项目，打开项目，在.parser包中建立自己的解析器子类，继承.bean.core.Parser抽象类。
+1. Fork项目，打开项目，在.parser包中建立自己的解析器子类，继承.core.parser.Parser抽象类。
 2. 给你的解析器子类添加这个注解。  
    `com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean`
    注解的第一个参数相当于是你的解析器的标识符，要求使用小写字母，最好是学校英文简称。第二个参数相当于显示名称，即适配器在使用中显示出的名称。
@@ -28,7 +27,7 @@
 3. 查看Course类和ClassTime类的文档，了解输出数据类的结构。
 4. 重写`url`属性，这个属性是教务系统的网址。  
    对于Java用户，则是重写`getUrl():String`方法。
-5. 重写`parse(String):List<Course>`方法，实现你自己的解析器类。
+5. 重写`parse(String):List<Course>`方法，实现你自己的解析器类。另外在基类中还有一些可选的属性，可以参考它们的功能自行决定是否重写。
 6. 在.bean.factory.HardcodeScanner中的init代码块注册你的解析器类。请仅注册final类（Kotlin中的非open）。  
    请按照文件名顺序排序注册代码。注册方式一看就懂。
 7. 测试，提交，PR。
@@ -81,6 +80,6 @@ dependencies {
 
 ### 使用说明
 
-通过ParserFactory类查找获取解析器。这个类需要一个TypeScanner对象作为参数。TypeScanner是查找解析器的接口，默认（即无入参）采用Reflections反射扫描对象，还提供一个硬编码的对象列表。Android用户无法使用反射扫描的实现，可以选择硬编码实现，也可以自己实现TypeScanner。
+通过ParserFactory类查找获取解析器。这个类需要一个TypeScanner对象作为参数。TypeScanner是查找解析器的接口，默认使用硬编码的“扫描器”。如果需要自定义哪些解析器可以使用，哪些不可以，也可以自己实现TypeScanner。
 
 通过ParserFactory查找到想要的解析器后，调用解析器的`parse(String):List<Course>`方法，传入一个HTML字符串，即可获得解析结果。
