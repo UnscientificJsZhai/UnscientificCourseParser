@@ -44,6 +44,12 @@ class NwpuParser : Parser() {
         return titleMap.values.toList()
     }
 
+    /**
+     * 解析上课时间。
+     *
+     * @param element HTML元素。
+     * @return 上课时间。
+     */
     private fun parseClassTime(element: Element): ClassTime {
         val location = try {
             val addressElement = element.getElementsByClass("address")[0]

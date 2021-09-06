@@ -2,7 +2,6 @@ package com.github.unscientificjszhai.unscientificcourseparser.core.factory
 
 import com.github.unscientificjszhai.unscientificcourseparser.core.parser.Parser
 import com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean
-import com.github.unscientificjszhai.unscientificcourseparser.parser.NwpuOldParser
 import com.github.unscientificjszhai.unscientificcourseparser.parser.NwpuParser
 import com.github.unscientificjszhai.unscientificcourseparser.parser.WhutParser
 
@@ -24,7 +23,6 @@ class HardcodeScanner : TypeScanner {
     init {
         this.map.apply {
             //在这里注册
-            submit(NwpuOldParser::class.java)
             submit(NwpuParser::class.java)
             submit(WhutParser::class.java)
         }
