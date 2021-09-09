@@ -1,6 +1,5 @@
 package com.github.unscientificjszhai.unscientificcourseparser.parser;
 
-import com.github.unscientificjszhai.unscientificcourseparser.StringUtility;
 import com.github.unscientificjszhai.unscientificcourseparser.core.data.ClassTime;
 import com.github.unscientificjszhai.unscientificcourseparser.core.data.Course;
 import com.github.unscientificjszhai.unscientificcourseparser.core.parser.Parser;
@@ -16,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.github.unscientificjszhai.unscientificcourseparser.StringUtilityKt.removeHtmlTags;
 
 /**
  * 武汉理工大学。
@@ -49,9 +50,9 @@ public final class WhutParser extends Parser {
         courses.remove(courses.get(1)); //移除空白。
         courses.remove(courses.get(0)); //移除表头。
         for (Element element : courses) {
-            final String title = StringUtility.removeHtmlTags(element.child(0).toString());
-            final double credit = Double.parseDouble(StringUtility.removeHtmlTags(element.child(1).toString()));
-            final String teacher = StringUtility.removeHtmlTags(element.child(4).toString());
+            final String title = removeHtmlTags(element.child(0).toString());
+            final double credit = Double.parseDouble(removeHtmlTags(element.child(1).toString()));
+            final String teacher = removeHtmlTags(element.child(4).toString());
             teacherMap.put(title, teacher);
             courseList.add(new Course(title, credit, "", new ArrayList<>()));
         }
@@ -96,7 +97,7 @@ public final class WhutParser extends Parser {
         if (teacherName == null) {
             teacherName = "";
         }
-        final String location = StringUtility.removeHtmlTags(element.childNode(1).toString()).substring(1);
+        final String location = removeHtmlTags(element.childNode(1).toString()).substring(1);
         final String information = element.child(1).childNode(0).toString();
         int dayOfWeek = tableIndex % 8 - 1;
         if (dayOfWeek == -1) {

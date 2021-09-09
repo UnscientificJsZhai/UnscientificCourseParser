@@ -14,7 +14,7 @@ class ParserFactory(scanner: TypeScanner) {
     private val parserMap: Map<String, Class<out Parser>> = scanner.scan()
 
     /**
-     * 默认构造方法，使用自带扫描器。不支持在Android上使用。
+     * 默认构造方法，使用自带扫描器。
      */
     constructor() : this(HardcodeScanner())
 
