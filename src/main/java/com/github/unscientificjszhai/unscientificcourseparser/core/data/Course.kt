@@ -10,6 +10,7 @@ package com.github.unscientificjszhai.unscientificcourseparser.core.data
  * @see ClassTime
  * @author UnscientificJsZhai
  */
+@Suppress("unused")
 data class Course(
     val title: String,
     val credit: Double,

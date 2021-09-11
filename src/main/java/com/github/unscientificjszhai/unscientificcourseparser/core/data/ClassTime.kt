@@ -14,6 +14,7 @@ package com.github.unscientificjszhai.unscientificcourseparser.core.data
  * @param specificTime 特定的上课时间。如果[from]和[to]都为0的时候，此项即表示特定的上课时间。
  * @author UnscientificJsZhai
  */
+@Suppress("unused")
 data class ClassTime(
     val day: Int,
     val from: Int,
@@ -43,4 +44,48 @@ data class ClassTime(
          */
         const val SCHEDULE_MODE_EVEN = 2
     }
+
+    /**
+     * 正常情况下（上课时间完全按照课表排）的构造方法。
+     *
+     * @param day 周几上课。取值范围0-6，0代表周日，1代表周一，6代表周六。
+     * @param from 从第几节课开始。
+     * @param to 到第几节课结束。
+     * @param startWeek 起始周。
+     * @param endWeek 结束周。
+     * @param scheduleMode 排课规则，见伴生对象中的常量。
+     * @param location 上课地点。比如教室房间号。
+     * @param teacher 教师姓名。
+     */
+    constructor(
+        day: Int,
+        from: Int,
+        to: Int,
+        startWeek: Int,
+        endWeek: Int,
+        scheduleMode: Int,
+        location: String,
+        teacher: String,
+    ) : this(day, from, to, startWeek, endWeek, scheduleMode, location, teacher, null)
+
+    /**
+     * 特定上课时间的构造方法。
+     *
+     * @param day 周几上课。取值范围0-6，0代表周日，1代表周一，6代表周六。
+     * @param startWeek 起始周。
+     * @param endWeek 结束周。
+     * @param scheduleMode 排课规则，见伴生对象中的常量。
+     * @param location 上课地点。比如教室房间号。
+     * @param teacher 教师姓名。
+     * @param specificTime 特定的上课时间。
+     */
+    constructor(
+        day: Int,
+        startWeek: Int,
+        endWeek: Int,
+        scheduleMode: Int,
+        location: String,
+        teacher: String,
+        specificTime: String
+    ) : this(day, 0, 0, startWeek, endWeek, scheduleMode, location, teacher, specificTime)
 }

@@ -49,6 +49,7 @@ class CoursesJson(private val courses: List<Course>, private val serializer: Jso
          * @param jsonString 输入Json字符串。
          */
         @JvmStatic
+        @Suppress("unused")
         fun jsonToCourse(jsonString: String) = jsonToCourse(jsonString, CourseListDeserializer())
     }
 

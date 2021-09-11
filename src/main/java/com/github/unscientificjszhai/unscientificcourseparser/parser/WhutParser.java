@@ -93,7 +93,7 @@ public final class WhutParser extends Parser {
      */
     @NotNull
     private List<ClassTime> parseClassTime(final Element element, String teacherName, int tableIndex) {
-        ArrayList<ClassTime> resultList = new ArrayList();
+        ArrayList<ClassTime> resultList = new ArrayList<>();
         if (teacherName == null) {
             teacherName = "";
         }
@@ -142,8 +142,7 @@ public final class WhutParser extends Parser {
                             endWeek,
                             ClassTime.SCHEDULE_MODE_DEFAULT,
                             location,
-                            teacherName,
-                            null
+                            teacherName
                     )
             );
         }

@@ -22,8 +22,7 @@
 1. Fork项目，打开项目，在.parser包中建立自己的解析器子类，继承.core.parser.Parser抽象类。
 2. 给你的解析器子类添加这个注解。  
    `com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean`
-   注解的第一个参数相当于是你的解析器的标识符，要求使用小写字母，最好是学校英文简称。第二个参数相当于显示名称，即适配器在使用中显示出的名称。
-   使用中文全称即可。第三个参数表示这个解析器是本地解析器还是云解析器。默认不填写即为否。对于本地无法解析的数据，会用到云解析。如果你要解析的教务系统在本地实在无法读取（比如西北工业大学翱翔门户），就该考虑使用云解析。
+   注解的第一个参数相当于是你的解析器的标识符，要求使用小写字母，最好是学校英文简称。第二个参数相当于显示名称，即适配器在使用中显示出的名称。使用中文全称即可。
 3. 查看Course类和ClassTime类的文档，了解输出数据类的结构。
 4. 重写`url`属性，这个属性是教务系统的网址。  
    对于Java用户，则是重写`getUrl():String`方法。
@@ -48,7 +47,7 @@
 3. 完成后需要格式化代码。 如果你是用的是IntelliJ IDEA，在Windows下按<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>、 在macOS中按<kbd>option</kbd>
    +<kbd>command</kbd>+<kbd>L</kbd>格式化代码。
 4. 对于Kotlin用户，创建数据类Course和ClassTime、调用其构造方法时请使用命名参数，这样的代码具有自描述性。例如：
-   ```kotlin
+   ```kotlin 
    val course = Course(
        title = "课程标题",
        credit = 1.0,
@@ -60,7 +59,10 @@
 
 ## 接入说明
 
-在Gradle脚本中添加如下依赖。当前版本：  
+要想在Android、其他Java项目中使用此项目，需要在Gradle脚本中添加如下依赖。
+
+当前版本：
+
 [![](https://jitpack.io/v/UnscientificJsZhai/UnscientificCourseParser.svg)](https://jitpack.io/#UnscientificJsZhai/UnscientificCourseParser)
 
 ```groovy
@@ -80,6 +82,16 @@ dependencies {
 
 ### 使用说明
 
-通过ParserFactory类查找获取解析器。这个类需要一个TypeScanner对象作为参数。TypeScanner是查找解析器的接口，默认使用硬编码的“扫描器”。如果需要自定义哪些解析器可以使用，哪些不可以，也可以自己实现TypeScanner。
+1.
 
-通过ParserFactory查找到想要的解析器后，调用解析器的`parse(String):List<Course>`方法，传入一个HTML字符串，即可获得解析结果。
+通过ParserFactory类查找获取解析器。这个类需要一个TypeScanner对象作为参数。TypeScanner是查找解析器的接口，默认使用硬编码的“扫描器”。（高级功能）如果需要自定义哪些解析器可以使用，哪些不可以，也可以自己实现TypeScanner。
+
+2. 通过ParserFactory查找到想要的解析器后，调用解析器的`parse(String):List<Course>`方法，传入一个HTML字符串，即可获得解析结果。
+
+3. 解析结果返回的是本项目定义的数据类，不一定和你的项目中的数据类互相兼容。你可以直接从数据类中琥的数据，也可以转为Json来进一步处理。
+
+### 转为Json
+
+使用`core.export.CoursesJson`
+类，可以实现数据的Json序列化和反序列化。默认提供了一套方案实现序列化和反序列化。如果你需要自定义生成的Json，你也可以自己定义序列化器。需要实现[Gson](https://github.com/google/gson)包的JsonSerializer并作为参数传入该类的构造方法中。  
+反序列化功能同理。

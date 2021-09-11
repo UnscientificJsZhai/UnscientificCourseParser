@@ -37,5 +37,6 @@ abstract class Parser {
      * @return 解析器的显示名称。
      * @throws NullPointerException 如果解析器没有设置显示名称则会抛出此异常。
      */
+    @Suppress("unused")
     fun getDisplayName() = this::class.java.getAnnotation(ParserBean::class.java).displayName
 }

@@ -8,7 +8,7 @@ import com.github.unscientificjszhai.unscientificcourseparser.core.data.ClassTim
  * @return 去掉HTML标签后的字符串。
  * @author UnscientificJsZhai
  */
-fun String.removeHtmlTags() = this
+internal fun String.removeHtmlTags() = this
     .replace("<[a-z]+>".toRegex(), "")
     .replace("</[a-z]+>".toRegex(), "")
 
@@ -17,7 +17,7 @@ fun String.removeHtmlTags() = this
  *
  * @return 描述周几上课的数字。0代表周日，6代表周六。无法解析则返回-1。
  */
-fun String.textToDayOfWeek(): Int {
+internal fun String.textToDayOfWeek(): Int {
     return when (this) {
         "星期一", "周一" -> 1
         "星期二", "周二" -> 2
