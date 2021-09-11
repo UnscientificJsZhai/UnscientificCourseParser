@@ -2,7 +2,7 @@
 
 ## 简介
 
-本项目是基于Jsoup的课程表解析库，可用于课程表开发。采用IoC模式，使得更容易使用。 仍在开发中，正式版即将上线。  
+本项目是基于Jsoup的课程表解析库，可用于课程表开发。采用IoC模式，使得更容易使用。
 相关项目：[时间管理大师](https://github.com/UnscientificJsZhai/TimeManager)
 
 ### 支持学校
@@ -68,12 +68,13 @@
 ```groovy
 allprojects {
     repositories {
-
+        //其它仓库...
         maven { url 'https://jitpack.io' }
     }
 }
 
 dependencies {
+    //其它依赖...
     implementation 'com.github.UnscientificJsZhai:UnscientificCourseParser:Tag'
 }
 ```
@@ -82,13 +83,11 @@ dependencies {
 
 ### 使用说明
 
-1.
-
-通过ParserFactory类查找获取解析器。这个类需要一个TypeScanner对象作为参数。TypeScanner是查找解析器的接口，默认使用硬编码的“扫描器”。（高级功能）如果需要自定义哪些解析器可以使用，哪些不可以，也可以自己实现TypeScanner。
+1. 通过ParserFactory类查找获取解析器。这个类需要一个TypeScanner对象作为参数。TypeScanner是查找解析器的接口，默认使用硬编码的“扫描器”。（高级功能）如果需要自定义哪些解析器可以使用，哪些不可以，也可以自己实现TypeScanner。
 
 2. 通过ParserFactory查找到想要的解析器后，调用解析器的`parse(String):List<Course>`方法，传入一个HTML字符串，即可获得解析结果。
 
-3. 解析结果返回的是本项目定义的数据类，不一定和你的项目中的数据类互相兼容。你可以直接从数据类中琥的数据，也可以转为Json来进一步处理。
+3. 解析结果返回的是本项目定义的数据类，不一定和你的项目中的数据类互相兼容。你可以直接从数据类中的数据，也可以转为Json来进一步处理。
 
 ### 转为Json
 
