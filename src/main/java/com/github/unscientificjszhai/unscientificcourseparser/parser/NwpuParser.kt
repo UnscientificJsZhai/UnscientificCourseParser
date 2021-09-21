@@ -101,7 +101,7 @@ class NwpuParser : Parser() {
         val day = dayOfWeekRegex.findAll(timeString).iterator().next().value.textToDayOfWeek()
 
         val originalWeekStrings = weekRegex.findAll(timeString).iterator().next().value.split(" ")
-        for(weekStringResult in originalWeekStrings){
+        for (weekStringResult in originalWeekStrings) {
             val weekNumbers = numberRegex.findAll(weekStringResult).iterator()
             val startWeek = weekNumbers.next().value.toInt()
             val endWeek = if (weekNumbers.hasNext()) {

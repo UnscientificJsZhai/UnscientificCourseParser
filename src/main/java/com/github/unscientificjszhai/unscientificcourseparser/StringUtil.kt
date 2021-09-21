@@ -1,3 +1,4 @@
+@file:JvmName("StringUtil")
 package com.github.unscientificjszhai.unscientificcourseparser
 
 import com.github.unscientificjszhai.unscientificcourseparser.core.data.ClassTime

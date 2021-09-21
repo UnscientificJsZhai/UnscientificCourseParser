@@ -1,2 +1,5 @@
 rootProject.name = 'UnscientificCourseParser'
+include 'libAnnotation'
+include 'libProcesser'
+include 'libProcessor'
 

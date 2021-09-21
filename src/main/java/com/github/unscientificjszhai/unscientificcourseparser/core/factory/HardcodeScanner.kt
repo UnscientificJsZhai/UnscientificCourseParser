@@ -9,7 +9,7 @@ import com.github.unscientificjszhai.unscientificcourseparser.parser.WhutParser
  * 硬编码式类扫描器实现。（这都不叫扫描了）
  * （暂时的备选方案，希望以后能有更好的解决方案）
  */
-class HardcodeScanner : TypeScanner {
+internal class HardcodeScanner : TypeScanner {
 
     private val map = HashMap<String, Class<out Parser>>()
 

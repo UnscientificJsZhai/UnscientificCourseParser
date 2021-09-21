@@ -2,8 +2,7 @@
 
 ## 简介
 
-本项目是基于Jsoup的课程表解析库，可用于课程表开发。采用IoC模式，使得更容易使用。
-相关项目：[时间管理大师](https://github.com/UnscientificJsZhai/TimeManager)
+本项目是基于Jsoup的课程表解析库，可用于课程表开发。采用IoC模式，使得更容易使用。 相关项目：[时间管理大师](https://github.com/UnscientificJsZhai/TimeManager)
 
 ### 支持学校
 
@@ -83,7 +82,8 @@ dependencies {
 
 ### 使用说明
 
-1. 通过ParserFactory类查找获取解析器。这个类需要一个TypeScanner对象作为参数。TypeScanner是查找解析器的接口，默认使用硬编码的“扫描器”。（高级功能）如果需要自定义哪些解析器可以使用，哪些不可以，也可以自己实现TypeScanner。
+1. 通过ParserFactory类查找获取解析器。  
+   这个类需要一个TypeScanner对象作为参数。TypeScanner是查找解析器的接口，默认使用硬编码的“扫描器”。（高级功能）如果需要自定义哪些解析器可以使用，哪些不可以，也可以自己实现TypeScanner。
 
 2. 通过ParserFactory查找到想要的解析器后，调用解析器的`parse(String):List<Course>`方法，传入一个HTML字符串，即可获得解析结果。
 
@@ -92,5 +92,6 @@ dependencies {
 ### 转为Json
 
 使用`core.export.CoursesJson`
-类，可以实现数据的Json序列化和反序列化。默认提供了一套方案实现序列化和反序列化。如果你需要自定义生成的Json，你也可以自己定义序列化器。需要实现[Gson](https://github.com/google/gson)包的JsonSerializer并作为参数传入该类的构造方法中。  
+类，可以实现数据的Json序列化和反序列化。默认提供了一套方案实现序列化和反序列化。如果你需要自定义生成的Json，你也可以自己定义序列化器。需要实现[Gson](https://github.com/google/gson)
+包的JsonSerializer并作为参数传入该类的构造方法中。  
 反序列化功能同理。
