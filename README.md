@@ -2,7 +2,7 @@
 
 ## 简介
 
-本项目是基于Jsoup的课程表解析库，可用于课程表开发。采用IoC模式，使得更容易使用。 相关项目：[时间管理大师](https://github.com/UnscientificJsZhai/TimeManager)
+本项目是基于Jsoup的课程表解析库，可用于课程表开发。通过注解处理器，实现IoC模式，使得更容易使用。 相关项目：[时间管理大师](https://github.com/UnscientificJsZhai/TimeManager)
 
 ### 支持学校
 
@@ -26,8 +26,6 @@
 4. 重写`url`属性，这个属性是教务系统的网址。  
    对于Java用户，则是重写`getUrl():String`方法。
 5. 重写`parse(String):List<Course>`方法，实现你自己的解析器类。另外在基类中还有一些可选的属性，可以参考它们的功能自行决定是否重写。
-6. 在.bean.factory.HardcodeScanner中的init代码块注册你的解析器类。请仅注册final类（Kotlin中的非open）。  
-   请按照文件名顺序排序注册代码。注册方式一看就懂。
 7. 测试，提交，PR。
 
 ### 注意事项
@@ -37,6 +35,7 @@
 3. 提交时请勿提交测试类和测试用HTML文件。小心隐私泄露。
 4. 关于多个学校共享相同教务系统：请在parser包下新建一个包，包名为教务系统名简称。然后创建一个抽象类继承Parser，实现解析方法`parse(String):List<Course>`
    。不要给这个抽象类添加上述的两个注解。然后创建若干个该抽象类的子类并实现方法`getUrl():String`，给每个子类添加上述两个注解。
+5. `com.github.unscientificjszhai.unscientificcourseparser.core.factory.ParserFactory`中如果报红请不要修改。构建后会自动生成缺失的类。
 
 ### 编码要求
 
