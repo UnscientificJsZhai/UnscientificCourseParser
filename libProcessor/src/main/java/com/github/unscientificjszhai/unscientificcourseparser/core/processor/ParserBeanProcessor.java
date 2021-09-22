@@ -1,15 +1,13 @@
-package processor;
+package com.github.unscientificjszhai.unscientificcourseparser.core.processor;
 
 import com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Messager;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -21,20 +19,29 @@ import java.util.TreeSet;
 public class ParserBeanProcessor extends AbstractProcessor {
 
     private Messager messager;
+    private Filer filer;
+
+    private final ArrayList<Element> elements = new ArrayList<>();
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
         messager = processingEnv.getMessager();
-        this.messager.printMessage(Diagnostic.Kind.ERROR, "Initial Processing");
+        filer = processingEnv.getFiler();
     }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        this.messager.printMessage(Diagnostic.Kind.ERROR, "Start Processing");
-        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ParserBean.class);
-        for (Element element : elements) {
-            messager.printMessage(Diagnostic.Kind.ERROR, element.getSimpleName().toString());
+        if (roundEnv.processingOver()) {
+
+            FileGenerator.generateJavaFile(filer, elements);
+
+        } else {
+            Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ParserBean.class);
+            for (Element element : elements) {
+                messager.printMessage(Diagnostic.Kind.NOTE, element.getSimpleName().toString());
+                this.elements.add(element);
+            }
         }
         return true;
     }
@@ -42,7 +49,7 @@ public class ParserBeanProcessor extends AbstractProcessor {
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         Set<String> types = new TreeSet<>();
-        types.add("com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean");
+        types.add(ParserBean.class.getName());
         return types;
     }
 
