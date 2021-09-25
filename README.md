@@ -20,7 +20,7 @@
 
 1. Fork项目，打开项目，在.parser包中建立自己的解析器子类，继承.core.parser.Parser抽象类。
 2. 给你的解析器子类添加这个注解。  
-   `com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean`
+   `com.github.unscientificjszhai.unscientificcourseparser.core.parser.core.ParserBean`
    注解的第一个参数相当于是你的解析器的标识符，要求使用小写字母，最好是学校英文简称。第二个参数相当于显示名称，即适配器在使用中显示出的名称。使用中文全称即可。
 3. 查看Course类和ClassTime类的文档，了解输出数据类的结构。
 4. 重写`url`属性，这个属性是教务系统的网址。  

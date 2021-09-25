@@ -119,7 +119,6 @@ class CoursesJson(private val courses: List<Course>, private val serializer: Jso
                 json.asJsonArray
             } else return CoursesJson(list)
             for (courseElement in courseArray) {
-
                 if (courseElement is JsonObject) {
                     val title = courseElement.get("title").asString
                     val credit = courseElement.get("credit").asDouble
@@ -180,9 +179,7 @@ class CoursesJson(private val courses: List<Course>, private val serializer: Jso
                 } else {
                     continue
                 }
-
             }
-
             return CoursesJson(list)
         }
     }

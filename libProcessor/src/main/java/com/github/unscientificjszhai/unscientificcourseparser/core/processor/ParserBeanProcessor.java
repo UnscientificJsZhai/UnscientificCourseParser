@@ -33,9 +33,7 @@ public class ParserBeanProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         if (roundEnv.processingOver()) {
-
             FileGenerator.generateJavaFile(filer, elements);
-
         } else {
             Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ParserBean.class);
             for (Element element : elements) {
