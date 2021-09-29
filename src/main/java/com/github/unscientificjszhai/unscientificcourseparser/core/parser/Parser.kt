@@ -27,8 +27,10 @@ abstract class Parser {
      * 解析方法。子类需要重写此方法。
      *
      * @param htmlText 输入的HTML字符串。
+     * @throws Exception 执行过程中可能会抛出任何类型的异常，需要做好异常处理。
      * @return 解析结果。
      */
+    @Throws(Exception::class)
     abstract fun parse(htmlText: String): List<Course>
 
     /**

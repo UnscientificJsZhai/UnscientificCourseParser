@@ -15,7 +15,7 @@ import javax.lang.model.element.TypeElement
  * @param filer 注解处理器的环境对象。
  * @param classes 扫描到的类。
  */
-fun generateJavaFile(
+internal fun generateJavaFile(
     filer: Filer,
     classes: List<Element>
 ) {
