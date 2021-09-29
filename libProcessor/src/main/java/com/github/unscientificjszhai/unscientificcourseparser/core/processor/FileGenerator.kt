@@ -47,14 +47,20 @@ internal fun generateJavaFile(
         }.build()
 
     //注册方法
+    val scannerInterfaceTypeName = ClassName.get(
+        "com.github.unscientificjszhai.unscientificcourseparser.core.factory",
+        "TypeScanner"
+    )
     val submitMethod = MethodSpec.methodBuilder("submit")
-        .addModifiers(Modifier.PRIVATE)
+        .addModifiers(Modifier.PUBLIC)
+        .returns(scannerInterfaceTypeName)
         .addParameter(classOfParser, "parser")
         .addStatement(
             "String beanName = parser.getAnnotation(\$T.class).value()",
             ClassName.get(ParserBean::class.java)
         )
         .addStatement("map.put(beanName, parser)")
+        .addStatement("return this")
         .build()
 
     //实现方法
@@ -71,10 +77,6 @@ internal fun generateJavaFile(
         .build()
 
     //类
-    val scannerInterfaceTypeName = ClassName.get(
-        "com.github.unscientificjszhai.unscientificcourseparser.core.factory",
-        "TypeScanner"
-    )
     val typeSpec = TypeSpec.classBuilder("Scanner_Impl")
         .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
         .addSuperinterface(scannerInterfaceTypeName)

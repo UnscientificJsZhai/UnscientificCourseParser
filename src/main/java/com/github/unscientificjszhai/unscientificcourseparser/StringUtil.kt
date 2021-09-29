@@ -54,7 +54,7 @@ internal fun String.removeParentheses(): String {
         }
 
     return if (
-        (!type && this.endsWith(")")) || type && this.endsWith("）")
+        (!type && this.endsWith(")")) || (type && this.endsWith("）"))
     ) {
         this.substring(1, this.lastIndex)
     } else {

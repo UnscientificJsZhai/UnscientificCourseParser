@@ -11,6 +11,11 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Node
 
+/**
+ * 东北大学
+ *
+ * @author UnscientificJsZhai
+ */
 @ParserBean("neu", "东北大学")
 class NeuParser : Parser() {
 
