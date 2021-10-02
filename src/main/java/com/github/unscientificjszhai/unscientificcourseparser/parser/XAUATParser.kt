@@ -50,8 +50,14 @@ class XAUATParser : Parser() {
 
             val weeks = classTimeSource[1].trim().removeParentheses().split(',')
             val numberRangeRegex = "[0-9]+~[0-9]+".toRegex()
+            val numberRegex = "[0-9]+".toRegex()
             for (week in weeks) {
-                val numberRange = numberRangeRegex.find(week)?.value?.split('~') ?: continue
+                val regex = if (week.contains('~')) {
+                    numberRangeRegex
+                } else { //仅上课一周的情况
+                    numberRegex
+                }
+                val numberRange = regex.find(week)?.value?.split('~') ?: continue
                 course.classTimes.add(
                     ClassTime(
                         location = location,
@@ -60,7 +66,7 @@ class XAUATParser : Parser() {
                         to = to,
                         teacher = "",
                         startWeek = numberRange[0].toInt(),
-                        endWeek = numberRange[1].toInt(),
+                        endWeek = numberRange[numberRange.lastIndex].toInt(),
                         scheduleMode = if (week.contains("单")) {
                             ClassTime.SCHEDULE_MODE_ODD
                         } else if (week.contains("双")) {
