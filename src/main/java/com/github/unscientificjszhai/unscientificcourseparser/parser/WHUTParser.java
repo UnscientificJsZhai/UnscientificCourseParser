@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * @author UnscientificJsZhai
  */
 @ParserBean(value = "whut", displayName = "武汉理工大学")
-public final class WhutParser extends Parser {
+public final class WHUTParser extends Parser {
 
     @NotNull
     @Override

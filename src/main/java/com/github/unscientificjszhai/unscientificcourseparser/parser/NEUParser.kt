@@ -17,7 +17,7 @@ import org.jsoup.nodes.Node
  * @author UnscientificJsZhai
  */
 @ParserBean("neu", "东北大学")
-class NeuParser : Parser() {
+class NEUParser : Parser() {
 
     companion object {
 
@@ -26,7 +26,7 @@ class NeuParser : Parser() {
 
     override val url = "http://219.216.96.4/eams/courseTableForStd!courseTable.action"
 
-    override val message = "请只在校园网内访问"
+    override val message = "请在校园网内访问"
 
     private val parenthesesRegex = "\\(.+?\\)".toRegex()
     private val numberRegex = "[0-9]+".toRegex()

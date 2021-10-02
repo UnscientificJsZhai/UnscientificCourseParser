@@ -14,7 +14,7 @@ import org.jsoup.nodes.Element
  * @author UnscientificJsZhai
  */
 @ParserBean("nwpu", "西北工业大学")
-class NwpuParser : Parser() {
+class NWPUParser : Parser() {
 
     override val url = "https://students-schedule.nwpu.edu.cn/ui/#/courseTable"
 
