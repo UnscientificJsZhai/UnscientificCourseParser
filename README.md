@@ -89,6 +89,15 @@ dependencies {
 ### 转为Json
 
 使用`core.export.CoursesJson`
-类，可以实现数据的Json序列化和反序列化。默认提供了一套方案实现序列化和反序列化。如果你需要自定义生成的Json，你也可以自己定义序列化器。需要实现[Gson](https://github.com/google/gson)
-包的JsonSerializer并作为参数传入该类的构造方法中。  
+类，可以实现数据的Json序列化和反序列化。默认提供了一套方案实现序列化和反序列化。如果你需要自定义生成的Json，你也可以自己定义序列化器。需要实现[Gson](https://github.com/google/gson)包的JsonSerializer并作为参数传入该类的构造方法中。  
 反序列化功能同理。
+
+### 定制工厂类
+
+ParserFactory类是检索、获得解析器实例的最佳选择。它获取项目中所有解析器的方法是调用参数中TypeScanner对象的`scan():Map<String,Class<? extends Parser>>`
+方法。默认情况下，通过注解处理器，此项目在每次构建的时候都会完整扫描一次parser包中的所有解析器，并将它们存储起来。所以，传入一个自定义的TypeScanner对象，就可以定制解析器的可用范围，甚至可以将自己项目中的解析器类也添加进来。
+
+1. 实现TypeScanner接口。
+2. 为实现类创建一个Map类型的成员变量。
+3. 在实现类初始化时注册需要的解析器。
+4. 在`scan():Map<String,Class<? extends Parser>>`方法中返回这个成员Map。
