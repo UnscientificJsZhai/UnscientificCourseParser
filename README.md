@@ -73,7 +73,7 @@ allprojects {
 
 dependencies {
     //其它依赖...
-    implementation 'com.github.unscientificjszhai:unscientificcourseparser:Tag'
+    implementation 'com.github.UnscientificJsZhai:UnscientificCourseParser:Tag'
 }
 ```
 
