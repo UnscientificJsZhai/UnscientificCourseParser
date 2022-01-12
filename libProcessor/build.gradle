@@ -3,8 +3,8 @@ plugins {
     id 'java'
 }
 
-group 'com.github.unscientificjszhai'
-version '0.0.1'
+group groupId
+version versionId
 
 repositories {
     mavenCentral()
