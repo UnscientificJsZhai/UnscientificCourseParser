@@ -2,7 +2,8 @@
 
 ## 简介
 
-本项目是基于Jsoup的课程表解析库，可用于课程表开发。通过注解处理器，实现IoC模式，使得更容易使用。 相关项目：[时间管理大师](https://github.com/UnscientificJsZhai/TimeManager)
+本项目是基于Jsoup的课程表解析库，可用于课程表开发。通过注解处理器，实现IoC模式，使得更容易使用。
+相关项目：[不科学的课程表](https://github.com/UnscientificJsZhai/UnscientificClassScheduler)
 
 ### 支持学校
 

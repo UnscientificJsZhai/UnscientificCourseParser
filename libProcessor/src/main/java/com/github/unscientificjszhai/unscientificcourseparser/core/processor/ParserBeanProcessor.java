@@ -1,7 +1,5 @@
 package com.github.unscientificjszhai.unscientificcourseparser.core.processor;
 
-import com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean;
-
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
@@ -12,7 +10,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * 注解处理器。用于在编译期处理{@link ParserBean}注解生成一个类扫描器。
+ * 注解处理器。用于在编译期处理注解生成一个类扫描器。
  *
  * @author UnscientificJsZhai
  */
@@ -35,10 +33,12 @@ public class ParserBeanProcessor extends AbstractProcessor {
         if (roundEnv.processingOver()) {
             FileGenerator.generateJavaFile(filer, elements);
         } else {
-            Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ParserBean.class);
-            for (Element element : elements) {
-                messager.printMessage(Diagnostic.Kind.NOTE, element.getSimpleName().toString());
-                this.elements.add(element);
+            for (TypeElement typeElement : annotations) {
+                Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(typeElement);
+                for (Element element : elements) {
+                    messager.printMessage(Diagnostic.Kind.NOTE, element.getSimpleName().toString());
+                    this.elements.add(element);
+                }
             }
         }
         return true;
@@ -47,7 +47,7 @@ public class ParserBeanProcessor extends AbstractProcessor {
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         Set<String> types = new TreeSet<>();
-        types.add(ParserBean.class.getName());
+        types.add("com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean");
         return types;
     }
 

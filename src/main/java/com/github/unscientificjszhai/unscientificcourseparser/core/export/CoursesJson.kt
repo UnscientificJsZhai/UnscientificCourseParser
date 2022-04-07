@@ -13,6 +13,7 @@ import java.lang.reflect.Type
  * @param serializer 自定义的Json序列化实现。
  * @author UnscientificJsZhai
  */
+@Suppress("unused")
 class CoursesJson(private val courses: List<Course>, private val serializer: JsonSerializer<CoursesJson>) :
     List<Course> by courses {
 

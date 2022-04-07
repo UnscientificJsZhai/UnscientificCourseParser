@@ -2,7 +2,6 @@
 
 package com.github.unscientificjszhai.unscientificcourseparser.core.processor
 
-import com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean
 import com.squareup.javapoet.*
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Element
@@ -25,7 +24,7 @@ internal fun generateJavaFile(
     val classOfParser = ParameterizedTypeName.get(
         ClassName.get("java.lang", "Class"),
         WildcardTypeName.subtypeOf(parserBaseTypeName)
-    ) // Class<? extends Parser>
+    )// Class<? extends Parser>
     val mapTypeName = ParameterizedTypeName.get(
         ClassName.get("java.util", "HashMap"),
         ClassName.get("java.lang", "String"),
@@ -56,8 +55,7 @@ internal fun generateJavaFile(
         .returns(scannerInterfaceTypeName)
         .addParameter(classOfParser, "parser")
         .addStatement(
-            "String beanName = parser.getAnnotation(\$T.class).value()",
-            ClassName.get(ParserBean::class.java)
+            "String beanName = parser.getAnnotation(com.github.unscientificjszhai.unscientificcourseparser.core.parser.ParserBean.class).value()"
         )
         .addStatement("map.put(beanName, parser)")
         .addStatement("return this")

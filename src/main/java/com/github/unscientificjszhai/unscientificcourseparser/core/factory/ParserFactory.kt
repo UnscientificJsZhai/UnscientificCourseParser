@@ -11,12 +11,26 @@ import com.github.unscientificjszhai.unscientificcourseparser.core.parser.Parser
  */
 class ParserFactory(scanner: TypeScanner) {
 
+    companion object {
+
+        private val defaultScanner by lazy {
+            try {
+                val scannerClass = Class
+                    .forName("com.github.unscientificjszhai.unscientificcourseparser.core.factory.Scanner_Impl")
+                scannerClass.constructors[0].newInstance() as TypeScanner
+            } catch (e: Exception) {
+                TypeScanner.EmptyScanner()
+            }
+        }
+    }
+
     private val parserMap: Map<String, Class<out Parser>> = scanner.scan()
 
     /**
      * 默认构造方法，使用自带扫描器。
      */
-    constructor() : this(Scanner_Impl()) //这里报红没有关系，构建后会生成这个类
+    @Suppress("unused")
+    constructor() : this(defaultScanner)
 
     /**
      * 获取要查找的解析器。
